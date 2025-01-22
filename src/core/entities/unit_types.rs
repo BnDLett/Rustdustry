@@ -1,8 +1,8 @@
 use macroquad::color::*;
-use macroquad::prelude::{draw_texture, draw_texture_ex, load_texture, DrawTextureParams, Texture2D, Vec2};
+use macroquad::prelude::{draw_texture, draw_texture_ex, load_texture, screen_height, screen_width, DrawTextureParams, Texture2D, Vec2};
 use crate::constants::TILE_SIZE;
-use crate::game::units::base_unit::{BaseUnit, SpritePath};
-use crate::game::units::team::Team;
+use crate::core::entities::base_unit::{BaseUnit, SpritePath};
+use crate::core::entities::team::Team;
 
 pub struct Flare {
     pub base_unit: BaseUnit
@@ -18,8 +18,10 @@ impl Flare {
         Flare {
             base_unit: BaseUnit { 
                 sprite: texture,
-                speed: 2.7,
+                max_speed: 2.7,
                 position: Default::default(),
+                velocity: Default::default(),
+                drag: 0.04,
                 rotation: 0.0,
                 target_rotation: 0.0,
                 team: Team::Serpulo,
@@ -35,14 +37,19 @@ impl Flare {
     }
     
     pub fn draw(&mut self) {
-        draw_texture_ex(&self.base_unit.sprite, self.base_unit.position.x, 
-                        self.base_unit.position.y, WHITE, DrawTextureParams {
-                dest_size: Option::from(Vec2::new(TILE_SIZE as f32, TILE_SIZE as f32)),
-                source: None,
-                rotation: self.base_unit.target_rotation,
-                flip_x: false,
-                flip_y: false,
-                pivot: None,
-            });
+        draw_texture_ex(
+            &self.base_unit.sprite, 
+            self.base_unit.position.x * TILE_SIZE as f32,
+            self.base_unit.position.y * TILE_SIZE as f32, 
+            WHITE, 
+            DrawTextureParams { 
+                dest_size: Some(Vec2::new(TILE_SIZE as f32, TILE_SIZE as f32)), 
+                source: None, 
+                rotation: self.base_unit.target_rotation, 
+                flip_x: false, 
+                flip_y: false, 
+                pivot: None, 
+            }
+        );
     }
 }

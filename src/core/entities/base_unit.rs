@@ -3,16 +3,19 @@ use std::fmt::Display;
 use macroquad::math::Vec2;
 use macroquad::prelude::Texture2D;
 use crate::constants::UNIT_SPRITE_PATH;
-use crate::game::units::team::Team;
+use crate::core::entities::team::Team;
 
-/// a VERY base structure for units. Anuke's way of handling units is the fourth circle of hell, so
+/// a VERY base structure for entities. Anuke's way of handling entities is the fourth circle of hell, so
 /// I am not doing a 1:1 copy.
 pub struct BaseUnit {
     pub sprite: Texture2D,
-    pub speed: f32,
+    pub max_speed: f32,
     pub position: Vec2,
+    pub velocity: Vec2,
+    pub drag: f32,
     pub rotation: f32,
     pub target_rotation: f32,
+    
     pub team: Team,
     
     pub boost_multiplier: f32,
